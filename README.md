@@ -28,3 +28,15 @@ letters substituted for non-alphabetic characters might seem like the
 most secure choices, the concatenated version will be longer, easier
 to remember (making it less likely to be written down) and harder to
 crack. [Relevant xkcd](https://xkcd.com/936/).
+
+## Installing and running the program
+
+````
+$ git clone https://github.com/jimburton/mkPasswd.git
+$ cd mkPasswd/
+$ cabal sandbox init
+$ cabal configure
+$ cabal install
+$ .cabal-sandbox/bin/mkPasswd -h
+# prints the help message
+````
