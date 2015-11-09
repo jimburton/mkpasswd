@@ -77,9 +77,7 @@ maybeUpper c = do f <- randFloat
 {-| Create a password according to the flags supplied. -}                  
 mkPasswd :: [Flag] -> IO String
 mkPasswd fs = 
-    do let h  = Help `elem` fs
-           w  = Wordy `elem` fs
-           v  = Version `elem` fs
+    do let w  = Wordy `elem` fs
            s  = Strong `elem` fs
            x  = VeryStrong `elem` fs
            e  = Explain `elem` fs
@@ -156,7 +154,7 @@ header = "Usage: mkPasswd [OPTION...]"
 
 defaultWords = "/etc/dictionaries-common/words"
 
-defaultLength, maxLength, wordyLength :: Int
+defaultLength, maxLength :: Int
 defaultLength = 6
 maxLength     = 15
 
