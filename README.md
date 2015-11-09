@@ -1,6 +1,6 @@
-# MakePasswd
+# mkPasswd
 
-`makePasswd` is a simple password generation utility written in
+`mkPasswd` is a simple password generation utility written in
 Haskell, intended for teaching purposes on the University of Brighton
 Haskell course. It provides a simple demonstration of how to use the
 `System.Console.GetOpt` package, which is used to read in and organise

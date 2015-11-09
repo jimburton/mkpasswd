@@ -159,7 +159,6 @@ defaultWords = "/etc/dictionaries-common/words"
 defaultLength, maxLength, wordyLength :: Int
 defaultLength = 6
 maxLength     = 15
-wordyLength   = 4
 
 version = "mkPasswd 0.1"
 
