@@ -187,8 +187,8 @@ getLen = foldl (\acc x -> case x of
                           (Length str) -> read str
                           _            -> acc) defaultLength 
 
-{-| Retrieve the option containing the path to the dictionary file from the flags supplied, or use the default value if the
-user didn't supply one. -}
+{-| Retrieve the option containing the path to the dictionary file from the flags supplied, or use the 
+default value if the user didn't supply one. -}
 getFp :: [Flag] -> FilePath
 getFp = foldl (\acc x -> case x of 
                           (WordsFile fp) -> fp
