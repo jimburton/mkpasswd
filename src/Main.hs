@@ -161,18 +161,18 @@ maxLength     = 15
 version = "mkPasswd 0.1"
 
 options :: [OptDescr Flag] 
-options = [ Option "l" [] (ReqArg Length "6") "length of the password" 
-          , Option "s" [] (NoArg Strong) 
+options = [ Option "l"  [] (ReqArg Length "6") "length of the password" 
+          , Option "s"  [] (NoArg Strong) 
                                     "create a somewhat stronger password"
-          , Option "w" [] (NoArg Wordy) 
+          , Option "w"  [] (NoArg Wordy) 
                                     "create a password from the concatenation \
                                     \of 3 words, e.g. correcthorsebattery"
-          , Option "x" [] (NoArg VeryStrong) "create a very strong password"
+          , Option "x"  [] (NoArg VeryStrong) "create a very strong password"
           , Option "h?" [] (NoArg Help) "show this message"
-          , Option "v" [] (NoArg Version) "display the version number" 
-          , Option "f" [] (ReqArg WordsFile defaultWords) 
+          , Option "v"  [] (NoArg Version) "display the version number" 
+          , Option "f"  [] (ReqArg WordsFile defaultWords) 
                                     "location of the words file" 
-          , Option "e" [] (NoArg Explain) 
+          , Option "e"  [] (NoArg Explain) 
                                     "if the password is based on a dictionary \
                                     \word, show the original word to make the \
                                     \password easier to remember" ]

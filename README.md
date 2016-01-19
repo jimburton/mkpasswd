@@ -27,7 +27,7 @@ Although an entirely random password or a dictionary word with some
 letters substituted for non-alphabetic characters might seem like the
 most secure choices, the concatenated version will be longer, easier
 to remember (making it less likely to be written down) and harder to
-crack. [Relevant xkcd](https://xkcd.com/936/).
+crack. [Relevant xkcd](https://xkcd.com/936/). [Relevant blog post from security expert contradicting relevant xkcd](https://www.schneier.com/blog/archives/2014/03/choosing_secure_1.html).
 
 ## Installing and running the program
 
