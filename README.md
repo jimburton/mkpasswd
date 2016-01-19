@@ -46,6 +46,6 @@ $ .cabal-sandbox/bin/mkPasswd -h
 Add an option to generate passwords based on [Bruce Schneir's
 advice](https://www.schneier.com/blog/archives/2014/03/choosing_secure_1.html),
 which is to base them on memorable sentences. For example, the
-sentence ~When I was seven, my sister threw my stuffed rabbit in the
-toilet~ could become `WIw7,mstmsritt`. This kind of password isn't
+sentence *When I was seven, my sister threw my stuffed rabbit in the
+toilet* could become `WIw7,mstmsritt`. This kind of password isn't
 susceptible to a dictionary attack.
