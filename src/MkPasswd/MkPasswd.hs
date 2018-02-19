@@ -128,6 +128,13 @@ processFlags fs | Help `elem` fs    = putStrLn $ usageInfo header options
                 | Version `elem` fs = putStrLn version
                 | otherwise         = do pwd <- mkPasswd fs
                                          putStrLn pwd
+header = "Usage: mkPasswd [OPTION...]" 
+
+defaultWords = "/etc/dictionaries-common/words"
+
+defaultLength, maxLength :: Int
+defaultLength = 6
+maxLength     = 15
 
 {-| Functions relating to processing command-line options supplied by the user. 
 See the Haskell wiki for a short tutorial explaining the purpose of flags,
@@ -140,6 +147,7 @@ data Flag = Length String
           | Version
           | Help 
           | Explain deriving (Show, Eq)
+
 
 header = "Usage: mkPasswd [OPTION...]" 
 

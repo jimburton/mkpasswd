@@ -29,6 +29,17 @@ import System.Random ( randomRs
                      , getStdRandom )
 
 import MkPasswd.MkPasswd
+<<<<<<< HEAD
+=======
+
+{-| Decide what to do based on the flags supplied. This will result in printing
+the help or version messages, or creating a password. -}
+processFlags :: [Flag] -> IO ()
+processFlags fs | Help `elem` fs    = putStrLn $ usageInfo header options
+                | Version `elem` fs = putStrLn version
+                | otherwise         = do pwd <- mkPasswd fs
+                                         putStrLn pwd
+>>>>>>> 7deec049a83bc365fb02066c28e5edf31a7fe12c
 
 {-| Entry point. -}
 main :: IO ()
