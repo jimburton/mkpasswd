@@ -16,10 +16,28 @@ build-type:          Simple
 -- extra-source-files:  
 cabal-version:       >=1.10
 
+library
+  build-depends:    base, random
+  hs-source-dirs:   src
+  exposed-modules:  Main
+  other-modules:    MkPasswd.MkPasswd
+  default-language: Haskell2010
+
 executable mkPasswd
-  main-is: Main.hs             
-  -- other-modules:       
+  main-is:             Main.hs             
+  other-modules:       MkPasswd.MkPasswd
   -- other-extensions:    
-  build-depends:       base >=4.6, random >=1.0 && <1.1
+  build-depends:       base >=4.6, random >=1.0 
   hs-source-dirs:      src
   default-language:    Haskell2010
+
+test-suite test-mkPasswd
+    type:       exitcode-stdio-1.0
+    main-is:    Test.hs
+    hs-source-dirs: tests, src
+    build-depends: base
+                 , random
+                 , QuickCheck
+                 , test-framework
+                 , test-framework-quickcheck2
+    default-language:    Haskell2010
