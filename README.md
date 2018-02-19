@@ -37,10 +37,25 @@ $ cd mkPasswd/
 $ cabal sandbox init
 $ cabal configure
 $ cabal install
-$ .cabal-sandbox/bin/mkPasswd -h
+$ cabal run -h
 # prints the help message
 ````
+Read the help message to find out what combination of arguments you can use to generate passwords. The most basic way to do that is to call the program without any arguments, but you may have an issue with the location of the dictionary file:
 
+    $ cabal run
+    Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
+    Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
+    Running mkPasswd...
+    mkPasswd: /etc/dictionaries-common/words: openFile: does not exist (No such file or directory)
+
+Work out the location of the dictionary file on your system (`/usr/share/dict/words` on Fedora in the labs) and pass the location to the program via `cabal` like so:
+
+    $ cabal run -- -f /usr/share/dict/words 
+    Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
+    Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
+    Running mkPasswd...
+    CYc1u5
+    
 ## Improving the program
 
 Add an option to generate passwords based on [Bruce Schneir's
