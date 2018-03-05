@@ -37,10 +37,10 @@ $ cd mkPasswd/
 $ cabal sandbox init
 $ cabal configure
 $ cabal install
-$ cabal run -h
+$ cabal run -- -h
 # prints the help message
 ````
-Read the help message to find out what combination of arguments you can use to generate passwords. The most basic way to do that is to call the program without any arguments, but you may have an issue with the location of the dictionary file:
+Note that when we call `cabal run`, any flags that appear after the double dash (`--`) are passed directly to the application. Read the help message to find out what combination of arguments you can use to generate passwords. The most basic way to do that is to call the program without any arguments, but you may have an issue with the location of the dictionary file:
 
     $ cabal run
     Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
