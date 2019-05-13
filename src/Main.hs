@@ -28,7 +28,13 @@ import System.Random ( randomRs
                      , randomR
                      , getStdRandom )
 
-import MkPasswd.MkPasswd
+import MkPasswd.Types
+import MkPasswd.MkPasswd 
+
+{-| Some constants and default values -}
+version, header :: String
+version       = "mkPasswd 0.1"
+header        = "Usage: mkPasswd [OPTION...]" 
 
 {-| Decide what to do based on the flags supplied. This will result in printing
 the help or version messages, or creating a password. -}
@@ -37,17 +43,8 @@ processFlags fs | Help `elem` fs    = putStrLn $ usageInfo header options
                 | Version `elem` fs = putStrLn version
                 | otherwise         = do pwd <- mkPasswd fs
                                          putStrLn pwd
-
-{-| Entry point. -}
-main :: IO ()
-main = do xs <- getArgs
-          case getOpt RequireOrder options xs of
-            (flags, [], []) -> processFlags flags
-            (_, nonOpts,[]) -> error $ "unrecognized arguments: " ++ unwords nonOpts
-            (_, _, msgs)    -> error $ concat msgs ++ usageInfo header options
-
-version = "mkPasswd 0.1"
-
+                                         
+{-| Command-line options. -}
 options :: [OptDescr Flag] 
 options = [ Option "l"  [] (ReqArg Length "6") "length of the password" 
           , Option "s"  [] (NoArg Strong) 
@@ -64,3 +61,12 @@ options = [ Option "l"  [] (ReqArg Length "6") "length of the password"
                                     "if the password is based on a dictionary \
                                     \word, show the original word to make the \
                                     \password easier to remember" ]
+
+{-| Entry point. -}
+main :: IO ()
+main = do xs <- getArgs
+          case getOpt RequireOrder options xs of
+            (flags, [], []) -> processFlags flags
+            (_, nonOpts,[]) -> error $ "unrecognized arguments: " ++ unwords nonOpts
+            (_, _, msgs)    -> error $ concat msgs ++ usageInfo header options
+

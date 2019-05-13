@@ -1,6 +1,8 @@
 dist
+dist-newstyle
 cabal-dev
 *.o
+*~
 *.hi
 *.chi
 *.chs.h
@@ -11,7 +13,10 @@ cabal-dev
 .hsenv
 .cabal-sandbox/
 cabal.sandbox.config
+cabal.project.local
 *.prof
 *.aux
 *.hp
 TAGS/
+TAGS
+

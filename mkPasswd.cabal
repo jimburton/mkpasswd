@@ -18,7 +18,8 @@ cabal-version:       >=1.10
 
 executable mkPasswd
   main-is: Main.hs             
-  other-modules:       MkPasswd.MkPasswd       
+  other-modules:       MkPasswd.MkPasswd
+                     , MkPasswd.Types
   -- other-extensions:    
   build-depends:       base, random >=1.0 
   hs-source-dirs:      src

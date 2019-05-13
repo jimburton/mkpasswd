@@ -1,4 +1,5 @@
-module MkPasswd.MkPasswd where
+module MkPasswd.MkPasswd ( mkPasswd
+                         , defaultWords ) where
 
 import Data.Char (chr, toLower, toUpper)
 import Data.List (nub)
@@ -6,6 +7,15 @@ import System.Random ( randomRs
                      , newStdGen
                      , randomR
                      , getStdRandom )
+
+import MkPasswd.Types (Flag(..))
+
+{-| Some constants and default values -}
+defaultLength, maxLength :: Int
+defaultLength = 6
+maxLength     = 15
+defaultWords  :: String
+defaultWords  = "/etc/dictionaries-common/words"
 
 {-| Generate a random, printable ASCII character. -}
 randChar :: IO Char
@@ -46,6 +56,20 @@ subst :: Char -> Char
 subst c = case lookup (toLower c) substTable of
             (Just c') -> c'
             Nothing   -> c
+
+{-| Retrieve the Length option from the flags supplied, or use the default value if the
+user didn't supply one. -}
+getLen :: [Flag] -> Int
+getLen = foldl (\acc x -> case x of 
+                          (Length str) -> read str
+                          _            -> acc) defaultLength 
+
+{-| Retrieve the option containing the path to the dictionary file from the flag supplied, or the 
+default value. -}
+getFp :: [Flag] -> FilePath
+getFp = foldl (\acc x -> case x of 
+                          (WordsFile fp) -> fp
+                          _              -> acc) defaultWords 
 
 {-| Capitalise the input, `c', which is an alphabetic char, about half of the time. -} 
 maybeUpper :: Char -> IO Char
@@ -99,38 +123,3 @@ mkPasswdW f = do str <- readFile f
                      n  = length ls - 1
                  (i1, i2, i3) <- threeRandInts n
                  return $ (ls !! i1) ++ (ls !! i2) ++ (ls !! i3)
-               
-header = "Usage: mkPasswd [OPTION...]" 
-
-defaultWords = "/etc/dictionaries-common/words"
-
-defaultLength, maxLength :: Int
-defaultLength = 6
-maxLength     = 15
-
-{-| Functions relating to processing command-line options supplied by the user. 
-See the Haskell wiki for a short tutorial explaining the purpose of flags,
-options, required arguments and so on. -}
-data Flag = Length String 
-          | WordsFile FilePath 
-          | Strong
-          | Wordy 
-          | VeryStrong
-          | Version
-          | Help 
-          | Explain deriving (Show, Eq)
-
-
-{-| Retrieve the Length option from the flags supplied, or use the default value if the
-user didn't supply one. -}
-getLen :: [Flag] -> Int
-getLen = foldl (\acc x -> case x of 
-                          (Length str) -> read str
-                          _            -> acc) defaultLength 
-
-{-| Retrieve the option containing the path to the dictionary file from the flags supplied, or use the 
-default value if the user didn't supply one. -}
-getFp :: [Flag] -> FilePath
-getFp = foldl (\acc x -> case x of 
-                          (WordsFile fp) -> fp
-                          _              -> acc) defaultWords 
