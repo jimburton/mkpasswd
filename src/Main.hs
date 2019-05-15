@@ -15,18 +15,20 @@ to crack.
 module Main
     where
 
-import System.Environment (getArgs)
+import System.Environment    ( getArgs )
 import System.Console.GetOpt ( OptDescr(..)
                              , ArgDescr(..)
                              , ArgOrder(..)
                              , getOpt
                              , usageInfo )
-import Data.Char (chr, toLower, toUpper)
-import Data.List (nub)
-import System.Random ( randomRs
-                     , newStdGen
-                     , randomR
-                     , getStdRandom )
+import Data.Char             ( chr
+                             , toLower
+                             , toUpper)
+import Data.List             ( nub )
+import System.Random         ( randomRs
+                             , newStdGen
+                             , randomR
+                             , getStdRandom )
 
 import MkPasswd.Types
 import MkPasswd.MkPasswd 
