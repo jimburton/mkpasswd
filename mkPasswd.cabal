@@ -28,6 +28,8 @@ executable mkPasswd
 test-suite test-mkPasswd
     type:       exitcode-stdio-1.0
     main-is:    Test.hs
+    other-modules: MkPasswd.MkPasswd
+                 , MkPasswd.Types
     hs-source-dirs: tests, src
     build-depends: base
                  , random
