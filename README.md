@@ -38,7 +38,9 @@ $ cabal configure
 $ cabal install
 $ cabal run mkPasswd -- -h
 # prints the help message
-```` Note that when we call `cabal run mkPasswd`, any flags that
+```` 
+
+Note that when we call `cabal run mkPasswd`, any flags that
 appear after the double dash (`--`) are passed directly to the
 application. Read the help message to find out what combination of
 arguments you can use to generate passwords. The most basic way to do
