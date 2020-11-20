@@ -36,12 +36,16 @@ $ git clone https://github.com/jimburton/mkPasswd.git
 $ cd mkPasswd/
 $ cabal configure
 $ cabal install
-$ cabal run -- -h
+$ cabal run mkPasswd -- -h
 # prints the help message
-````
-Note that when we call `cabal run`, any flags that appear after the double dash (`--`) are passed directly to the application. Read the help message to find out what combination of arguments you can use to generate passwords. The most basic way to do that is to call the program without any arguments, but you may have an issue with the location of the dictionary file:
+```` Note that when we call `cabal run mkPasswd`, any flags that
+appear after the double dash (`--`) are passed directly to the
+application. Read the help message to find out what combination of
+arguments you can use to generate passwords. The most basic way to do
+that is to call the program without any arguments, but you may have an
+issue with the location of the dictionary file:
 
-    $ cabal run
+    $ cabal run mkPasswd
     Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
     Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
     Running mkPasswd...
@@ -49,7 +53,7 @@ Note that when we call `cabal run`, any flags that appear after the double dash 
 
 Work out the location of the dictionary file on your system (`/usr/share/dict/words` on Fedora in the labs) and pass the location to the program via `cabal` like so:
 
-    $ cabal run -- -f /usr/share/dict/words 
+    $ cabal run mkPasswd -- -f /usr/share/dict/words 
     Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
     Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
     Running mkPasswd...
