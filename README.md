@@ -1,6 +1,6 @@
-# mkPasswd
+# mkpasswd
 
-`mkPasswd` is a simple password generation utility written in
+`mkpasswd` is a simple password generation utility written in
 Haskell, intended for teaching purposes on the University of Brighton
 Haskell course. It provides a simple demonstration of how to use the
 `System.Console.GetOpt` package, which is used to read in and organise
@@ -12,7 +12,7 @@ You could improve the program by using the `Data.Text` API instead of `String`
 (although it wouldn't really make any difference to performance  in such a small 
 program) and perhaps by using applicative style in the `do` blocks of `IO` actions. 
 
-`mkPasswd` generates passwords by one of the following methods:
+`mkpasswd` generates passwords by one of the following methods:
 
 1. picking a word from a dictionary file and replacing some of the characters, 
 2. generating a stronger random string, or
@@ -33,32 +33,32 @@ crack. [Relevant xkcd](https://xkcd.com/936/). [Relevant blog post from security
 
 ````
 $ git clone https://github.com/jimburton/mkPasswd.git
-$ cd mkPasswd/
+$ cd mkpasswd/
 $ cabal configure
 $ cabal install
-$ cabal run mkPasswd -- -h
+$ cabal run mkpasswd -- -h
 # prints the help message
 ```` 
 
-Note that when we call `cabal run mkPasswd`, any flags that
+Note that when we call `cabal run mkpasswd`, any flags that
 appear after the double dash (`--`) are passed directly to the
 application. Read the help message to find out what combination of
 arguments you can use to generate passwords. The most basic way to do
 that is to call the program without any arguments, but you may have an
 issue with the location of the dictionary file:
 
-    $ cabal run mkPasswd
-    Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
-    Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
-    Running mkPasswd...
+    $ cabal run mkpasswd
+    Preprocessing executable 'mkpasswd' for mkpasswd-0.1.0.0..
+    Building executable 'mkpasswd' for mkpasswd-0.1.0.0..
+    Running mkpasswd...
     mkPasswd: /etc/dictionaries-common/words: openFile: does not exist (No such file or directory)
 
 Work out the location of the dictionary file on your system (`/usr/share/dict/words` on Fedora in the labs) and pass the location to the program via `cabal` like so:
 
-    $ cabal run mkPasswd -- -f /usr/share/dict/words 
-    Preprocessing executable 'mkPasswd' for mkPasswd-0.1.0.0..
-    Building executable 'mkPasswd' for mkPasswd-0.1.0.0..
-    Running mkPasswd...
+    $ cabal run mkpasswd -- -f /usr/share/dict/words 
+    Preprocessing executable 'mkpasswd' for mkpasswd-0.1.0.0..
+    Building executable 'mkpasswd' for mkpasswd-0.1.0.0..
+    Running mkpasswd...
     CYc1u5
     
 ## Improving the program
