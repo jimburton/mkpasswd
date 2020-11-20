@@ -54,9 +54,7 @@ substTable = [ ('e', '3')
 {-| Substitute `c' by looking it up in the lookup table. If `c' is not
 present in the lookup table, return `c'. -} 
 subst :: Char -> Char
-subst c = case lookup (toLower c) substTable of
-            (Just c') -> c'
-            Nothing   -> c
+subst c = maybe c id $ lookup (toLower c) substTable
 
 {-| Retrieve the Length option from the flags supplied, or use the default value if the
 user didn't supply one. -}
@@ -90,7 +88,11 @@ mkPasswd fs =
            fp = getFp fs 
        mkPasswd' w s x e n fp
 
-{-| Helper function for makePasswd. -}
+{-| Helper function for mkPasswd.
+
+mkPasswd' wordyP strongP veryStrongP explainP lengthP filePath
+
+-}
 mkPasswd' :: Bool -> Bool -> Bool -> Bool -> Int -> FilePath -> IO String
 mkPasswd' w s x e n fp | s         = mkPasswdR n randAlpha 
                        | x         = mkPasswdR n randChar
