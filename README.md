@@ -34,7 +34,6 @@ crack. [Relevant xkcd](https://xkcd.com/936/). [Relevant blog post from security
 ````
 $ git clone https://github.com/jimburton/mkPasswd.git
 $ cd mkPasswd/
-$ cabal sandbox init
 $ cabal configure
 $ cabal install
 $ cabal run -- -h
