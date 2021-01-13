@@ -18,16 +18,13 @@ program) and perhaps by using applicative style in the `do` blocks of `IO` actio
 2. generating a stronger random string, or
 3. concatenating 3 words from the dictionary.
 
-The default dictionary file, `/etc/dictionaries-common/words`, is
-correct on Debian-based systems (such as Ubuntu). It isn't tested on
-Windows but if you supply the location of a file that contains a list
-of words, one per line, then that should work.
-
 Although an entirely random password or a dictionary word with some
 letters substituted for non-alphabetic characters might seem like the
 most secure choices, the concatenated version will be longer, easier
 to remember (making it less likely to be written down) and harder to
-crack. [Relevant xkcd](https://xkcd.com/936/). [Relevant blog post from security expert contradicting relevant xkcd](https://www.schneier.com/blog/archives/2014/03/choosing_secure_1.html).
+crack. [Relevant xkcd](https://xkcd.com/936/). [Relevant blog post
+from security expert contradicting relevant
+xkcd](https://www.schneier.com/blog/archives/2014/03/choosing_secure_1.html).
 
 ## Installing and running the program
 
@@ -43,24 +40,20 @@ $ cabal run mkpasswd -- -h
 Note that when we call `cabal run mkpasswd`, any flags that
 appear after the double dash (`--`) are passed directly to the
 application. Read the help message to find out what combination of
-arguments you can use to generate passwords. The most basic way to do
-that is to call the program without any arguments, but you may have an
-issue with the location of the dictionary file:
+arguments you can use to generate passwords. 
 
-    $ cabal run mkpasswd
-    Preprocessing executable 'mkpasswd' for mkpasswd-0.1.0.0..
-    Building executable 'mkpasswd' for mkpasswd-0.1.0.0..
-    Running mkpasswd...
-    mkPasswd: /etc/dictionaries-common/words: openFile: does not exist (No such file or directory)
+    $ cabal run mkpasswd -- -h
+    Up to date
+    Usage: mkPasswd [OPTION...]
+      -l 6              length of the password
+      -s                create a somewhat stronger password
+      -w                create a password from the concatenation of 3 words, e.g. correcthorsebattery
+      -x                create a very strong password
+      -h, -?            show this message
+      -v                display the version number
+      -f dict/en.txt    location of the words file
+      -e                if the password is based on a dictionary word, show the original word to make the password easier to remember
 
-Work out the location of the dictionary file on your system (`/usr/share/dict/words` on Fedora in the labs) and pass the location to the program via `cabal` like so:
-
-    $ cabal run mkpasswd -- -f /usr/share/dict/words 
-    Preprocessing executable 'mkpasswd' for mkpasswd-0.1.0.0..
-    Building executable 'mkpasswd' for mkpasswd-0.1.0.0..
-    Running mkpasswd...
-    CYc1u5
-    
 ## Improving the program
 
 Add an option to generate passwords based on [Bruce Schneir's
