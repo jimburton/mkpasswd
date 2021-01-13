@@ -16,7 +16,8 @@ defaultLength = 6
 maxLength     = 15
 defaultWords  :: String
 --defaultWords  = "/etc/dictionaries-common/words" -- std on debian
-defaultWords  = "/usr/share/dict/words" -- std on fedora
+--defaultWords  = "/usr/share/dict/words" -- std on fedora
+defaultWords  = "dict/en.txt" -- the dictionary that is included with the project
 
 {-| Generate a random, printable ASCII character. -}
 randChar :: IO Char
