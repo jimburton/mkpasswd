@@ -7,7 +7,7 @@ import System.Random ( randomRs
                      , newStdGen
                      , randomR
                      , getStdRandom )
-
+import Data.Maybe (fromMaybe)
 import MkPasswd.Types (Flag(..))
 
 {-| Some constants and default values -}
@@ -55,7 +55,7 @@ substTable = [ ('e', '3')
 {-| Substitute `c' by looking it up in the lookup table. If `c' is not
 present in the lookup table, return `c'. -} 
 subst :: Char -> Char
-subst c = maybe c id $ lookup (toLower c) substTable
+subst c = fromMaybe c $ lookup (toLower c) substTable
 
 {-| Retrieve the Length option from the flags supplied, or use the default value if the
 user didn't supply one. -}
