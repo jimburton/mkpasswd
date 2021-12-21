@@ -1,34 +1,50 @@
 module MkPasswd.MkPasswd ( mkPasswd
                          , defaultWords ) where
 
-import Data.Char (chr, toLower, toUpper)
-import Data.List (nub)
+import Data.Functor  ( (<&>) )
+import Data.Char     ( chr, toLower, toUpper )
+import Data.List     ( nub )
 import System.Random ( randomRs
-                     , newStdGen
+                     , initStdGen
                      , randomR
                      , getStdRandom )
-
+import Data.Maybe    ( fromJust, isJust, fromMaybe )
 import MkPasswd.Types (Flag(..))
 
 {-| Some constants and default values -}
-defaultLength, maxLength :: Int
+defaultLength, defaultConcat, maxLength :: Int
 defaultLength = 6
+defaultConcat = 3
 maxLength     = 15
+
 defaultWords  :: String
 --defaultWords  = "/etc/dictionaries-common/words" -- std on debian
 --defaultWords  = "/usr/share/dict/words" -- std on fedora
 defaultWords  = "dict/en.txt" -- the dictionary that is included with the project
 
+{-| Get a random character in a range -}
+randCharInRange :: (Int, Int) -> IO Char
+randCharInRange r = getStdRandom (randomR r) <&> chr
+
+{-| Get a string of random characters in a range -}
+randCharsInRange :: Int -> (Int, Int) -> IO String
+randCharsInRange n r = initStdGen <&> randomRs r <&> map chr . take n . nub
+
 {-| Generate a random, printable ASCII character. -}
 randChar :: IO Char
-randChar = do i <- getStdRandom (randomR (33, 126)) -- from bang to wiggle
-              return (chr i)
+randChar = randCharInRange (33, 126) -- from bang to wiggle
+
+{-| Generate a string of random, printable ASCII characters. -}
+randChars :: Int -> IO String
+randChars n = randCharsInRange n (33, 126) -- from bang to wiggle
 
 {-| Generate a random alphabetical character. -}
 randAlpha :: IO Char
-randAlpha = do i <- getStdRandom (randomR (97, 122)) -- from a to z
-               let c = chr i
-               maybeUpper c  
+randAlpha = randCharInRange (97, 122) -- from a to z
+
+{-| Generate a string of random alphabetical character. -}
+randAlphas :: Int -> IO String
+randAlphas n = randCharsInRange n (97, 122) 
 
 {-| Generate a random float between 0.0 and 1.0. -}
 randFloat :: IO Float
@@ -38,11 +54,14 @@ randFloat = getStdRandom (randomR (0.0, 1.0))
 randInt :: Int -> IO Int
 randInt n = getStdRandom (randomR (0, n))
 
-{-| Generate 3 distinct random ints between 0 and n. -} 
-threeRandInts :: Int -> IO (Int, Int, Int)
-threeRandInts n = do g <- newStdGen
-                     let [x, y, z] = take 3 . nub $ randomRs (0, n) g
-                     return (x, y, z)
+{-| Generate n random ints between 0 and m. -}
+randInts :: Int -> Int -> IO [Int]
+randInts n m = take n . nub . randomRs (0, m) <$> initStdGen
+
+{-| Generate 3 distinct random ints between n and m. -} 
+threeRandInts :: Int -> Int -> IO (Int, Int, Int)
+threeRandInts n m = initStdGen >>=
+                    (\ [x, y, z] -> pure (x, y, z)) . take 3 . nub . randomRs (n, m)
 
 {-| Lookup table for character substitutions. -}
 substTable :: [(Char, Char)]
@@ -55,14 +74,20 @@ substTable = [ ('e', '3')
 {-| Substitute `c' by looking it up in the lookup table. If `c' is not
 present in the lookup table, return `c'. -} 
 subst :: Char -> Char
-subst c = maybe c id $ lookup (toLower c) substTable
+subst c = fromMaybe c $ lookup (toLower c) substTable
 
 {-| Retrieve the Length option from the flags supplied, or use the default value if the
 user didn't supply one. -}
 getLen :: [Flag] -> Int
 getLen = foldl (\acc x -> case x of 
                           (Length str) -> read str
-                          _            -> acc) defaultLength 
+                          _            -> acc) defaultLength
+
+{-| Retrieve the Concat option from the flags supplied. -}
+getCon :: [Flag] -> Maybe Int
+getCon = foldl (\acc x -> case x of 
+                          (Concat str) -> Just (read str)
+                          _            -> acc) Nothing
 
 {-| Retrieve the option containing the path to the dictionary file from the flag supplied, or the 
 default value. -}
@@ -73,9 +98,7 @@ getFp = foldl (\acc x -> case x of
 
 {-| Capitalise the input, `c', which is an alphabetic char, about half of the time. -} 
 maybeUpper :: Char -> IO Char
-maybeUpper c = do f <- randFloat
-                  let i = round f
-                  return (if i == 0 then toUpper c else c)
+maybeUpper c = randFloat <&> (\i -> if i==0 then toUpper c else c) . round
 
 {-| Create a password according to the flags supplied. -}                  
 mkPasswd :: [Flag] -> IO String
@@ -86,19 +109,29 @@ mkPasswd fs =
            e  = Explain `elem` fs
            l  = getLen fs
            n  = min maxLength (max defaultLength l)
-           fp = getFp fs 
-       mkPasswd' w s x e n fp
+           fp = getFp fs
+           c  = getCon fs
+       mkPasswd' w s x e n fp c
 
 {-| Helper function for mkPasswd.
 
 mkPasswd' wordyP strongP veryStrongP explainP lengthP filePath
 
 -}
-mkPasswd' :: Bool -> Bool -> Bool -> Bool -> Int -> FilePath -> IO String
-mkPasswd' w s x e n fp | s         = mkPasswdR n randAlpha 
-                       | x         = mkPasswdR n randChar
-                       | w         = mkPasswdW fp
-                       | otherwise = mkPasswdFromDict n fp e
+mkPasswd' :: Bool -> Bool -> Bool -> Bool -> Int -> FilePath -> Maybe Int -> IO String
+mkPasswd' w s x e n fp mc | isJust mc = mkPasswdC (fromJust mc) fp
+                          | s         = mkPasswdR n randAlpha 
+                          | x         = mkPasswdR n randChar
+                          | w         = mkPasswdW fp
+                          | otherwise = mkPasswdFromDict n fp e
+
+{-| Create a password by concatening words. -}
+mkPasswdC :: Int -> FilePath -> IO String
+mkPasswdC n fp =  do str <- readFile fp
+                     let ls = filter ((== defaultLength) . length) (lines str)
+                     if length ls < n 
+                       then error ("There are too few words which are " ++ show defaultLength ++ " letters long in the file "++fp)
+                       else randInts n (length ls - 1) <&> concatMap (ls!!)
 
 {-| Create a random string of length n. -}
 mkPasswdR :: Int -> IO Char -> IO String
@@ -122,8 +155,7 @@ mkPasswdFromDict n fp e =
 
 {-| Create a password by concatenating three words from the dictionary file. -}
 mkPasswdW :: FilePath -> IO String
-mkPasswdW f = do str <- readFile f
-                 let ls = lines str
-                     n  = length ls - 1
-                 (i1, i2, i3) <- threeRandInts n
-                 return $ (ls !! i1) ++ (ls !! i2) ++ (ls !! i3)
+mkPasswdW f = do ls <- readFile f <&> lines
+                 threeRandInts 0 (length ls - 1)
+                   >>= \(i1, i2, i3) -> pure $ (ls !! i1) ++ (ls !! i2) ++ (ls !! i3)
+

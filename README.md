@@ -45,7 +45,7 @@ arguments you can use to generate passwords.
     $ cabal run mkpasswd -- -h
     Up to date
     Usage: mkPasswd [OPTION...]
-      -l 6              length of the password
+      -l n              length of the password
       -s                create a somewhat stronger password
       -w                create a password from the concatenation of 3 words, e.g. correcthorsebattery
       -x                create a very strong password
@@ -53,6 +53,7 @@ arguments you can use to generate passwords.
       -v                display the version number
       -f dict/en.txt    location of the words file
       -e                if the password is based on a dictionary word, show the original word to make the password easier to remember
+	  -c n              create a password that concatenates n dictionary words ("Correct Horse Staple" style) 
 
 ## Improving the program
 

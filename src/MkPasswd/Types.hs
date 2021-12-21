@@ -10,5 +10,6 @@ data Flag = Length String
           | VeryStrong
           | Version
           | Help 
-          | Explain deriving (Show, Eq)
+          | Explain
+          | Concat String  deriving (Show, Eq)
 

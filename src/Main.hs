@@ -62,7 +62,9 @@ options = [ Option "l"  [] (ReqArg Length "6") "length of the password"
           , Option "e"  [] (NoArg Explain) 
                                     "if the password is based on a dictionary \
                                     \word, show the original word to make the \
-                                    \password easier to remember" ]
+                                    \password easier to remember"
+          , Option "c"  [] (ReqArg Concat "3") "create a password based on concatenation \
+                                               \of dictionary words, default 3"]
 
 {-| Entry point. -}
 main :: IO ()
