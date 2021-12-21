@@ -21,15 +21,6 @@ import System.Console.GetOpt ( OptDescr(..)
                              , ArgOrder(..)
                              , getOpt
                              , usageInfo )
-import Data.Char             ( chr
-                             , toLower
-                             , toUpper)
-import Data.List             ( nub )
-import System.Random         ( randomRs
-                             , newStdGen
-                             , randomR
-                             , getStdRandom )
-
 import MkPasswd.Types
 import MkPasswd.MkPasswd 
 
