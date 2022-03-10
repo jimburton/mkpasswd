@@ -5,8 +5,7 @@ import Test.QuickCheck.Monadic (assert, monadicIO, pick, pre, run)
 import Test.Framework
 import Test.Framework.Providers.QuickCheck2
 
-import MkPasswd.MkPasswd
-import MkPasswd.Types
+import MkPasswd.MkPasswd (Flag(Length), mkPasswd)
 
 prop_defaultLength :: Property
 prop_defaultLength = monadicIO $ do

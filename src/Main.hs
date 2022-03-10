@@ -21,13 +21,14 @@ import System.Console.GetOpt ( OptDescr(..)
                              , ArgOrder(..)
                              , getOpt
                              , usageInfo )
-import MkPasswd.Types
-import MkPasswd.MkPasswd 
+import MkPasswd.MkPasswd ( Flag(..)
+                         , mkPasswd
+                         , defaultWords )
 
 {-| Some constants and default values -}
 version, header :: String
 version       = "mkPasswd 0.1"
-header        = "Usage: mkPasswd [OPTION...]" 
+header        = "Usage: mkPasswd [options]" 
 
 {-| Decide what to do based on the flags supplied. This will result in printing
 the help or version messages, or creating a password. -}
