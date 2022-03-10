@@ -33,27 +33,18 @@ $ git clone https://github.com/jimburton/mkPasswd.git
 $ cd mkpasswd/
 $ cabal configure
 $ cabal install
-$ cabal run mkpasswd -- -h
-# prints the help message
-```` 
-
-Note that when we call `cabal run mkpasswd`, any flags that
-appear after the double dash (`--`) are passed directly to the
-application. Read the help message to find out what combination of
-arguments you can use to generate passwords. 
-
-    $ cabal run mkpasswd -- -h
-    Up to date
-    Usage: mkPasswd [OPTION...]
-      -l n              length of the password
-      -s                create a somewhat stronger password
-      -w                create a password from the concatenation of 3 words, e.g. correcthorsebattery
-      -x                create a very strong password
-      -h, -?            show this message
-      -v                display the version number
-      -f dict/en.txt    location of the words file
-      -e                if the password is based on a dictionary word, show the original word to make the password easier to remember
-	  -c n              create a password that concatenates n dictionary words ("Correct Horse Staple" style) 
+$ cabal run mkpasswd -h
+Usage: mkPasswd [OPTION...]
+  -l n              length of the password
+  -s                create a somewhat stronger password
+  -w                create a password from the concatenation of 3 words, e.g. correcthorsebattery
+  -x                create a very strong password
+  -h, -?            show this message
+  -v                display the version number
+  -f dict/en.txt    location of the words file
+  -e                if the password is based on a dictionary word, show the original word to make the password easier to remember
+  -c n              create a password that concatenates n dictionary words ("Correct Horse Staple" style) 
+````
 
 ## Improving the program
 
