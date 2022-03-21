@@ -1,5 +1,6 @@
 module MkPasswd.MkPasswd ( mkPasswd
-                         , defaultWords ) where
+                         , defaultWords
+                         , Flag(..) ) where
 
 import Data.Functor  ( (<&>) )
 import Data.Char     ( chr, toLower, toUpper )
@@ -9,19 +10,41 @@ import System.Random ( randomRs
                      , randomR
                      , getStdRandom )
 import Data.Maybe    ( fromJust, isJust, fromMaybe )
-import MkPasswd.Types (Flag(..))
 
--- | Some constants and default values.
-defaultLength, defaultConcat, maxLength :: Int
+-- * Types
+
+-- | Datatype of option flags.
+data Flag = Length String      -- ^ The length of the password. 
+          | WordsFile FilePath -- ^ The location of the dictionary.
+          | Strong             -- ^ Create a strong password.
+          | Wordy              -- ^ Create a password by concatening words.
+          | VeryStrong         -- ^ Create a very strong password.
+          | Version            -- ^ Show the version number.
+          | Help               -- ^ Show the help message.
+          | Explain            -- ^ Explain substitutions.
+          | Concat String  deriving (Show, Eq)
+
+-- * Constants and default values
+
+-- | The default length of passwords.
+defaultLength :: Int
 defaultLength = 6
+
+-- | The default number of words to concatenate.
+defaultConcat :: Int
 defaultConcat = 3
+
+-- | The maximum length of passwords.
+maxLength :: Int
 maxLength     = 15
 
--- Location of default dictionary.
+-- | The default location of the dictionary.
 defaultWords  :: String
 --defaultWords  = "/etc/dictionaries-common/words" -- std on debian
 --defaultWords  = "/usr/share/dict/words" -- std on fedora
 defaultWords  = "dict/en.txt" -- the dictionary that is included with the project
+
+-- * Generating random values.
 
 -- | Get a random character in a range.
 randCharInRange :: (Int, Int) -> IO Char
@@ -62,7 +85,10 @@ randInts n m = take n . nub . randomRs (0, m) <$> initStdGen
 -- | Generate 3 distinct random ints between n and m.
 threeRandInts :: Int -> Int -> IO (Int, Int, Int)
 threeRandInts n m = initStdGen >>=
-                    (\ [x, y, z] -> pure (x, y, z)) . take 3 . nub . randomRs (n, m)
+                    (\ [x, y, z] ->
+                       pure (x, y, z)) . take 3 . nub . randomRs (n, m)
+
+-- * Constructing passwords.
 
 -- | Lookup table for character substitutions.
 substTable :: [(Char, Char)]
@@ -97,7 +123,8 @@ getFp = foldl (\acc x -> case x of
                           (WordsFile fp) -> fp
                           _              -> acc) defaultWords 
 
--- | Capitalise the input, `c', which is an alphabetic char, about half of the time.
+-- | Capitalise the input, `c', which is an alphabetic char, about
+-- half of the time.
 maybeUpper :: Char -> IO Char
 maybeUpper c = randFloat <&> (\i -> if i==0 then toUpper c else c) . round
 
@@ -115,14 +142,14 @@ mkPasswd fs =
        mkPasswd' w s x e n fp c
 
 -- | Helper function for mkPasswd.
-mkPasswd' :: Bool      -- ^ Make a wordy password.
-          -> Bool      -- ^ Make a strong password.
-          -> Bool      -- ^ Make a very strong password.
-          -> Bool      -- ^ Explain the password substitutions.
-          -> Int       -- ^ Length of the password.
-          -> FilePath  -- ^ Path to ditionary.
-          -> Maybe Int -- ^ Make a password by concatenating this number of words.
-          -> IO String -- ^ The password.
+mkPasswd' :: Bool       -- ^ Make a wordy password?
+          -> Bool       -- ^ Make a strong password?
+          -> Bool       -- ^ Make a very strong password?
+          -> Bool       -- ^ Explain the password?
+          -> Int        -- ^ Length of the password.
+          -> FilePath   -- ^ Path to the dictionary.
+          -> Maybe Int  -- ^ Number of words to concatenate.
+          -> IO String  -- ^ The result, a password and possibly an explanation.
 mkPasswd' w s x e n fp mc | isJust mc = mkPasswdC (fromJust mc) fp
                           | s         = mkPasswdR n randAlpha 
                           | x         = mkPasswdR n randChar
@@ -161,8 +188,7 @@ mkPasswdFromDict n fp e =
 
 -- | Create a password by concatenating three words from the dictionary file.
 mkPasswdW :: FilePath -> IO String
-mkPasswdW f = do ls <- readFile f <&> lines
-                 threeRandInts 0 (length ls - 1)
-                   >>= \(i1, i2, i3) ->
-                         pure $ (ls !! i1) ++ (ls !! i2) ++ (ls !! i3)
-
+mkPasswdW f = do
+  ls <- readFile f <&> lines
+  threeRandInts 0 (length ls - 1)
+    >>= \(i1, i2, i3) -> pure $ (ls !! i1) ++ (ls !! i2) ++ (ls !! i3)

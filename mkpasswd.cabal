@@ -15,8 +15,8 @@ cabal-version:       >=1.10
 executable mkpasswd
   main-is: Main.hs             
   other-modules:       MkPasswd.MkPasswd
-                     , MkPasswd.Types
-  build-depends:       base, random >=1.0 
+  build-depends:       base
+                     , random >=1.2.1 
   hs-source-dirs:      src
   default-language:    Haskell2010
 
@@ -24,8 +24,8 @@ test-suite test-quickcheck
     type:       exitcode-stdio-1.0
     main-is:    TestQuickCheck.hs
     other-modules: MkPasswd.MkPasswd
-                 , MkPasswd.Types
-    hs-source-dirs: tests, src
+    hs-source-dirs: tests/quickcheck
+                  , src
     build-depends: base
                  , random
                  , QuickCheck
@@ -37,8 +37,8 @@ test-suite test-hunit
     type:       exitcode-stdio-1.0
     main-is:    TestHUnit.hs
     other-modules: MkPasswd.MkPasswd
-                 , MkPasswd.Types
-    hs-source-dirs: tests, src
+    hs-source-dirs: tests/hunit
+                  , src
     build-depends: base
                  , random
                  , HUnit

@@ -2,8 +2,7 @@ module Main where
 
 import Test.HUnit
 
-import MkPasswd.MkPasswd
-import MkPasswd.Types
+import MkPasswd.MkPasswd (mkPasswd)
 
 foo :: Int -> (Int, Int)
 foo x = (1, x)
