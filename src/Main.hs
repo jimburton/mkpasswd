@@ -25,20 +25,20 @@ import MkPasswd.MkPasswd ( Flag(..)
                          , mkPasswd
                          , defaultWords )
 
-{-| Some constants and default values -}
+-- | Some constants and default values.
 version, header :: String
 version       = "mkPasswd 0.1"
 header        = "Usage: mkPasswd [options]" 
 
-{-| Decide what to do based on the flags supplied. This will result in printing
-the help or version messages, or creating a password. -}
+-- | Decide what to do based on the flags supplied. This will result
+-- in printing the help or version messages, or creating a password.
 processFlags :: [Flag] -> IO ()
 processFlags fs | Help `elem` fs    = putStrLn $ usageInfo header options
                 | Version `elem` fs = putStrLn version
                 | otherwise         = do pwd <- mkPasswd fs
                                          putStrLn pwd
                                          
-{-| Command-line options. -}
+-- | Command-line options.
 options :: [OptDescr Flag] 
 options = [ Option "l"  [] (ReqArg Length "6") "length of the password" 
           , Option "s"  [] (NoArg Strong) 
@@ -58,7 +58,7 @@ options = [ Option "l"  [] (ReqArg Length "6") "length of the password"
           , Option "c"  [] (ReqArg Concat "3") "create a password based on concatenation \
                                                \of dictionary words, default 3"]
 
-{-| Entry point. -}
+-- | Entry point.
 main :: IO ()
 main = do xs <- getArgs
           case getOpt RequireOrder options xs of
