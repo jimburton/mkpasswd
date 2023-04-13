@@ -36,7 +36,7 @@ defaultConcat = 3
 
 -- | The maximum length of passwords.
 maxLength :: Int
-maxLength     = 15
+maxLength = 15
 
 -- | The default location of the dictionary.
 defaultWords  :: String
@@ -173,7 +173,7 @@ mkPasswdR n f = if n < 1 then return []
                         return (c : cs)
 
 -- | Create a password by looking up a word from the dictionary file and
--- optionally performing some substitutions.
+-- | optionally performing some substitutions.
 mkPasswdFromDict :: Int -> FilePath -> Bool -> IO String
 mkPasswdFromDict n fp e = 
     do str <- readFile fp
