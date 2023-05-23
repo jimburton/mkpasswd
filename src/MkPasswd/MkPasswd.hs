@@ -1,3 +1,11 @@
+-- |
+-- Module      : MkPasswd.hs
+-- Description : Functions for generating arbitrary strings to be used as passwords.
+-- Maintainer  : j.burton@brighton.ac.uk
+-- Stability   : experimental
+-- Portability : POSIX
+-- 
+-- 
 module MkPasswd.MkPasswd ( mkPasswd
                          , defaultWords
                          , Flag(..) ) where
